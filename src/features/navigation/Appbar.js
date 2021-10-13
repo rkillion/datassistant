@@ -10,11 +10,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../auth/userSlice';
+import { useHistory } from 'react-router';
 
 export default function Appbar({ toggleDrawer }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const user = useSelector((state)=>state.user.current)
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleLogout = () => {
       dispatch(logoutUser())
@@ -35,7 +37,7 @@ export default function Appbar({ toggleDrawer }) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -44,7 +46,7 @@ export default function Appbar({ toggleDrawer }) {
             // onClick={toggleDrawer("left", true)}
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Datassistant
           </Typography>
@@ -75,6 +77,7 @@ export default function Appbar({ toggleDrawer }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
+                <MenuItem onClick={()=>history.push("/datassistants")}>My Datassistants</MenuItem>
                 <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
               </Menu>
             </div>
