@@ -6,6 +6,12 @@ export const fetchDatassistants = createAsyncThunk("datassistants/fetchDatassist
         .then((data) => data);
     });
 
+export const fetchDatassistant = createAsyncThunk("datassistants/fetchDatassistant", (id) => {
+    return fetch(`/datassistants/${id}`)
+        .then((response) => response.json())
+        .then((data) => data);
+    });
+
 export const postDatassistant = createAsyncThunk("datassistants/postDatassistant", (datassistant) => {
     return fetch('/datassistants', {
         method: 'POST',
@@ -21,6 +27,7 @@ export const postDatassistant = createAsyncThunk("datassistants/postDatassistant
 const initialState = {
     all: [],
     errors: {},
+    current: {},
     status: "idle", // loading state
 };
 
@@ -55,6 +62,18 @@ const datassistantsSlice = createSlice({
             } else {
                 state.errors = {};
                 state.all.push(action.payload);
+            }
+            state.status = "idle";
+        },
+        [fetchDatassistant.pending](state) {
+            state.status = "loading";
+          },
+        [fetchDatassistant.rejected](state) {
+            state.status = "idle";
+        },
+        [fetchDatassistant.fulfilled](state, action) {
+            if (!action.payload.errors) {
+                state.current = action.payload;
             }
             state.status = "idle";
         }

@@ -16,7 +16,7 @@ export default function AuthenticatedApp() {
     
     return (
         <AuthenticatedAppWindow>
-            <Appbar />
+            {/* <Appbar /> */}
             <Switch >
                 <Route exact path="/datassistants">
                     <DatassistantsPage />
