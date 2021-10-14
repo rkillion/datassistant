@@ -35,7 +35,12 @@ export default function Appbar({ toggleDrawer }) {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="fixed">
+      <AppBar 
+        position="fixed"
+        // sx={{
+        //   height: "8%"
+        // }}
+      >
         <Toolbar>
           {/* <IconButton
             size="large"
@@ -77,13 +82,14 @@ export default function Appbar({ toggleDrawer }) {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={()=>history.push("/datassistants")}>My Datassistants</MenuItem>
+                <MenuItem onClick={()=>{history.push("/datassistants");handleClose()}}>My Datassistants</MenuItem>
                 <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
               </Menu>
             </div>
           )}
         </Toolbar>
       </AppBar>
+      <Toolbar />
     </Box>
   );
 }

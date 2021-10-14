@@ -30,9 +30,8 @@ export default function DatassistantCard({ datassistant }) {
       <CardActions>
         <Button 
             size="small"
-            // onClick={()=>{
-            //   loadWorld(world.id);
-            //   history.push("/viewer")}}
+            onClick={()=>{
+              history.push(`/datassistants/${datassistant.id}`)}}
         >
             View
         </Button>

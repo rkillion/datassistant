@@ -29,7 +29,11 @@ function App() {
 
 const AppWindow = styled.div`
   height: 100%;
-  width: 100%
+  width: 100%;
+  display: block;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: stretch;
 `
 
 export default App;

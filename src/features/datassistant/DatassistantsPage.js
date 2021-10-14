@@ -9,8 +9,6 @@ export default function DatassistantsPage() {
     const datassistants = useSelector(state=>state.datassistants.all);
     const [newDFormOpen,setNewDFormOpen] = useState(false);
 
-    console.log(datassistants);
-
     return (
         <DisplayBox>
             <CardArea>
@@ -41,7 +39,7 @@ export default function DatassistantsPage() {
 const DisplayBox = styled.div`
     display: flex;
     width: auto;
-    padding: 120px;
+    padding: 60px;
     flex-direction: column;
     align-items: stretch;
 `
