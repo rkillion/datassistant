@@ -11,6 +11,7 @@ import Menu from '@mui/material/Menu';
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../auth/userSlice';
 import { useHistory } from 'react-router';
+import ProfileMenu from './ProfileMenu';
 
 export default function Appbar({ toggleDrawer }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -55,38 +56,7 @@ export default function Appbar({ toggleDrawer }) {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Datassistant
           </Typography>
-          {user.id && (
-            <div>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleMenu}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={()=>{history.push("/datassistants");handleClose()}}>My Datassistants</MenuItem>
-                <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
-              </Menu>
-            </div>
-          )}
+          <ProfileMenu />
         </Toolbar>
       </AppBar>
       <Toolbar />

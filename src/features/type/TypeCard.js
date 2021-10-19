@@ -1,16 +1,57 @@
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
-import { blue } from '@mui/material/colors';
+import { fetchBaseType, fetchType } from './typesSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDisplay } from '../view/displaySlice';
+import { assistantPathObject, myDataPathObject, setDisplayPath } from "../view/displaySlice";
 
 export default function TypeCard({ type }) {
     const color = type.value_type ? "purple" : "blue";
+    const dispatch = useDispatch();
+    const assistant = useSelector(state=>state.datassistants.current)
+
+    //when editing this function you may need to change a similar function in BreadcrumbLink
+    function handleClick() {
+        let assistantPath = {...assistantPathObject}
+        assistantPath.title_plural = assistant.title; 
+        assistantPath.title_singular = assistant.title;
+        if (type.value_type) {
+            dispatch(fetchBaseType({id: type.id,datassistant_id: assistant.id}))
+            .then(data=>{
+                dispatch(setDisplayPath([
+                    assistantPath,
+                    ...data.payload.parent_path,
+                    type
+                ]));
+            })
+        } else {
+            switch (type.id) {
+                case "myData" :
+                    dispatch(setDisplayPath([
+                        assistantPath,
+                        {...myDataPathObject} 
+                    ]));
+                    break;
+                default :
+                    dispatch(fetchType(type.id))
+                    .then(data=>{
+                        dispatch(setDisplayPath([
+                            assistantPath,
+                            {...myDataPathObject},
+                            ...data.payload.parent_path,
+                            type
+                        ]));
+                    });
+            }
+        }
+    }
 
     return (
         <Button variant="contained" sx={{
             margin: "5px",
             background: `${color}`
-        }}>
+        }} onClick={handleClick}>
             {type.title_plural}
         </Button>
         // <TypeCardBox>

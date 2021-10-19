@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import FormDialog from '../forms/FormDialog';
 import Button from '@mui/material/Button';
 import DatassistantCard from './DatassistantCard';
+import Appbar from '../navigation/Appbar';
 
 export default function DatassistantsPage() {
     const datassistants = useSelector(state=>state.datassistants.all);
@@ -11,6 +12,7 @@ export default function DatassistantsPage() {
 
     return (
         <DisplayBox>
+            <Appbar />
             <CardArea>
                 {!datassistants.length>0 ? null : 
                     datassistants.map(datassistant=><DatassistantCard key={datassistant.id} datassistant={datassistant}/>)

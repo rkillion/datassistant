@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import ActionArea from '../action/ActionArea';
 import BasicViewArea from '../view/BasicViewArea';
 
 export default function ObjectActionArea() {
     return (
         <ObjectActionContainer>
             <BasicViewArea />
+            <ActionArea />
         </ObjectActionContainer>
     )
 }

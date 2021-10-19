@@ -1,47 +1,43 @@
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography'
 import { useSelector } from 'react-redux';
-import TypeCard from './TypeCard';
-import { myDataPathObject } from '../view/displaySlice';
+import InstanceCard from './InstanceCard';
 
-export default function TypeCardsArea() {
-    const display = useSelector(state=>state.display.current)
+export default function InstanceCardsArea() {
     const displayPath = useSelector(state=>state.display.path)
     const assistant = useSelector(state=>state.datassistants.current)
     const currentType = useSelector(state=>state.types.current)
-    let subTypes; 
+    let instances; 
     const baseTypes = useSelector(state=>state.types.baseTypes);
 
     switch (displayPath[displayPath.length-1].id) {
         case "assistant" :
-            subTypes = [...baseTypes,{...myDataPathObject}];
+            instances = assistant.instances;
             break;
         case "myData" :
-            subTypes = assistant.sub_types;
+            instances = assistant.instances;
             break;
         default :
-            subTypes = currentType.sub_types;
+            instances = currentType.instances;
     }
 
     return (
-        <TypeCardsAreaContainer>
-            {subTypes.length>0 ? subTypes.map(type=>{
+        <InstanceCardsAreaContainer>
+            {instances.length>0 ? instances.map(instance=>{
                 return (
-                    <TypeCard key={type.id} type={type} />
+                    <InstanceCard key={instance.id} instance={instance} />
                 )
             }) : <Typography variant="overline">
-                {`No sub types`}
+                {`No instances`}
             </Typography>}
-        </TypeCardsAreaContainer>
+        </InstanceCardsAreaContainer>
     )
 }
 
-const TypeCardsAreaContainer = styled.div`
+const InstanceCardsAreaContainer = styled.div`
   width: 95%;
   background: lightblue;
   padding: 5px;
-  border-top: 1px dotted black;
-  border-bottom: 1px dotted black;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
