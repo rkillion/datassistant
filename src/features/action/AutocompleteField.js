@@ -2,7 +2,7 @@ import * as React from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { changeConfig, editCommandString, editOptionSelections } from './commandsSlice';
 
 export default function AutocompleteField({ positionIndex, options }) {
@@ -37,8 +37,44 @@ export default function AutocompleteField({ positionIndex, options }) {
     }
   })
 
+  function runChange(value) {
+    dispatch(editOptionSelections({selection: value.id,index: positionIndex}));
+    if (value.set) {
+      let keys = Object.keys(value.set);
+      keys.forEach(key=>{
+        dispatch(changeConfig({key: key,value: value.set[key]}))
+      });
+    }
+    if (value.setToValue) {
+      let keys = Object.keys(value.setToValue);
+      keys.forEach(key=>{
+        dispatch(changeConfig({key: key,value: value.display[value.setToValue[key]]}))
+      });
+    }
+    if (value.command) {
+      dispatch(editCommandString({command: value.command,index: positionIndex}))
+    }
+  }
+
+  useEffect(()=>{
+    console.log("startup runChange","theseOptions",theseOptions);
+    if (theseOptions.length>0) {
+      let startValue = theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0];
+      runChange(startValue)
+    }
+  },[])
+
+  useEffect(()=>{
+    console.log("display runChange","theseOptions",theseOptions);
+    if (theseOptions.length>0) {
+      let startValue = theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0];
+      runChange(startValue)
+    }
+  },[display])
+
   const [inputValue, setInputValue] = useState('');
 
+  if (theseOptions.length<=0) {return null}
   return (
     <Autocomplete
       disablePortal
@@ -47,25 +83,9 @@ export default function AutocompleteField({ positionIndex, options }) {
       options={theseOptions}
       getOptionLabel={(option) => option.display[thisDisplayField]}
       sx={{ width: "200px" }}
-      value={theseOptions[commands.optionSelections[positionIndex]]}
+      value={theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0]}
       onChange={(e,newValue)=>{
-        console.log(newValue);
-        dispatch(editOptionSelections({selection: newValue.id,index: positionIndex}));
-        if (newValue.set) {
-          let keys = Object.keys(newValue.set);
-          keys.forEach(key=>{
-            dispatch(changeConfig({key: key,value: newValue.set[key]}))
-          });
-        }
-        if (newValue.setToValue) {
-          let keys = Object.keys(newValue.setToValue);
-          keys.forEach(key=>{
-            dispatch(changeConfig({key: key,value: newValue.display[newValue.setToValue[key]]}))
-          });
-        }
-        if (newValue.command) {
-          dispatch(editCommandString({command: newValue.command,index: positionIndex}))
-        }
+        runChange(newValue);
       }}
       inputValue={inputValue}
       onInputChange={(event, newInputValue) => {

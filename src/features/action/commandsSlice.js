@@ -1,4 +1,16 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
+export const postNew = createAsyncThunk("commands/postNew", (config) => {
+    return fetch('/new', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(config)
+    })
+        .then((response) => response.json())
+        .then((data) => data);
+    });
 
 export const nextCommand = {
     new: [
@@ -126,6 +138,7 @@ const initialState = {
     commandStrings: ["new"],
     optionSelections: [0],
     config: {...configs.new},
+    errors: {},
     status: "idle"
 }
 
@@ -151,7 +164,24 @@ const commandsSlice = createSlice({
             state.optionSelections = [...newArray,action.payload.selection];
         }
     },
-    extraReducers: {}
+    extraReducers: {
+        [postNew.pending](state) {
+            state.status = "loading";
+          },
+        [postNew.rejected](state) {
+            state.status = "idle";
+        },
+        [postNew.fulfilled](state, action) {
+            if (action.payload.errors) {
+                state.errors = action.payload.errors;
+                console.log(action.payload.errors)
+            } else {
+                state.errors = {};
+                console.log(action.payload.message)
+            }
+            state.status = "idle";
+        }
+    }
 })
 
 export default commandsSlice.reducer

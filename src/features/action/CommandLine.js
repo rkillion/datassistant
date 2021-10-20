@@ -1,11 +1,25 @@
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import CommandStatement from './CommandStatement';
+import { useDispatch, useSelector } from 'react-redux';
+import { postNew } from './commandsSlice';
 
 export default function CommandLine() {
+    const config = useSelector(state=>state.commands.config)
+    const assistant = useSelector(state=>state.datassistants.current)
+    const type = useSelector(state=>state.types.current)
+    const dispatch = useDispatch()
 
     function handleClick() {
-        console.log("Log Button!")
+        //you must add the current datassistant_id to the config before dispatch the fetch
+        let thisConfig = JSON.parse(JSON.stringify(config));
+        thisConfig.datassistant_id = assistant.id;
+        if (config.make) {
+            dispatch(postNew(thisConfig))
+            .then(data=>{
+                
+            })
+        }
     }
     return (
         <CommandLineContainer>
