@@ -35,7 +35,12 @@ const datassistantsSlice = createSlice({
     name: "datassistants",
     initialState,
     reducers: {
-
+        addSubtype(state,action){
+            state.current.sub_types.push(action.payload)
+        },
+        addInstance(state,action){
+            state.current.instances.push(action.payload)
+        }
     },
     extraReducers: {
         [fetchDatassistants.pending](state) {
@@ -81,3 +86,5 @@ const datassistantsSlice = createSlice({
 })
 
 export default datassistantsSlice.reducer;
+
+export const { addInstance, addSubtype } = datassistantsSlice.actions

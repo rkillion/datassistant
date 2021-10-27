@@ -1,8 +1,9 @@
 import * as React from 'react';
 import Link from '@mui/material/Link';
-import { assistantPathObject, myDataPathObject, setDisplayPath } from "../view/displaySlice";
+import { assistantPathObject, myDataPathObject, setActiveSelection, setDisplayPath } from "../view/displaySlice";
+import { setCommandStrings } from "../action/commandsSlice";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchBaseType, fetchType } from '../type/typesSlice';
+import { fetchBaseType, fetchType, setCurrentType } from '../type/typesSlice';
 
 
 export default function BreadcrumbLink({ pathObject }) {
@@ -14,6 +15,8 @@ export default function BreadcrumbLink({ pathObject }) {
         let assistantPath = {...assistantPathObject}
         assistantPath.title_plural = assistant.title; 
         assistantPath.title_singular = assistant.title;
+        let commandStarter = pathObject.id === "assistant"||pathObject.id === "myData" ? ["new"] : ["note"];
+        dispatch(setCommandStrings(commandStarter));
         if (pathObject.value_type) {
             dispatch(fetchBaseType({id: pathObject.id,datassistant_id: assistant.id}))
             .then(data=>{
@@ -22,6 +25,7 @@ export default function BreadcrumbLink({ pathObject }) {
                     ...data.payload.parent_path,
                     pathObject
                 ]));
+                dispatch(setActiveSelection({type: "baseType",selection: data.payload}))
             })
         } else {
             switch (pathObject.id) {
@@ -29,22 +33,26 @@ export default function BreadcrumbLink({ pathObject }) {
                     dispatch(setDisplayPath([
                         assistantPath
                     ]));
+                    dispatch(setActiveSelection({type: "assistant",selection: {}}));
                     break;
                 case "myData" :
                     dispatch(setDisplayPath([
                         assistantPath,
                         {...myDataPathObject} 
                     ]));
+                    dispatch(setActiveSelection({type: "myData",selection: {}}))
                     break;
                 default :
                     dispatch(fetchType(pathObject.id))
                     .then(data=>{
+                        dispatch(setCurrentType(data.payload));
                         dispatch(setDisplayPath([
                             assistantPath,
                             {...myDataPathObject},
                             ...data.payload.parent_path,
                             pathObject
                         ]));
+                        dispatch(setActiveSelection({type: "type",selection: data.payload}))
                     });
             }
         }

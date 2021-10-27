@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 import CommandLine from './CommandLine';
+import { themeColors } from '../style/styleConst';
 
 export default function ActionArea() {
     const assistant = useSelector(state=>state.datassistants.current);
@@ -15,11 +16,11 @@ export default function ActionArea() {
 }
 
 const ActionAreaContainer = styled.div`
-  height: 40%;
   width: 100%;
-  background: lightblue;
+  background: ${themeColors.darkAccent};
+  color: white;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: stretch;
   align-items: center;
 `

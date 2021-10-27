@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button';
-import { fetchBaseType, fetchType } from './typesSlice';
+import { fetchBaseType, fetchType, setCurrentType } from './typesSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { setDisplay } from '../view/displaySlice';
+import { setActiveSelection, setDisplay } from '../view/displaySlice';
 import { assistantPathObject, myDataPathObject, setDisplayPath } from "../view/displaySlice";
+import { themeColors } from '../style/styleConst';
 
 export default function TypeCard({ type }) {
     const color = type.value_type ? "purple" : "blue";
@@ -24,6 +25,7 @@ export default function TypeCard({ type }) {
                     ...data.payload.parent_path,
                     type
                 ]));
+                dispatch(setActiveSelection({type: "baseType",selection: data.payload}));
             })
         } else {
             switch (type.id) {
@@ -32,16 +34,19 @@ export default function TypeCard({ type }) {
                         assistantPath,
                         {...myDataPathObject} 
                     ]));
+                    dispatch(setActiveSelection({type: "myData",selection: {}}));
                     break;
                 default :
                     dispatch(fetchType(type.id))
                     .then(data=>{
+                        dispatch(setCurrentType(data.payload));
                         dispatch(setDisplayPath([
                             assistantPath,
                             {...myDataPathObject},
                             ...data.payload.parent_path,
                             type
                         ]));
+                        dispatch(setActiveSelection({type: "type",selection: data.payload}));
                     });
             }
         }
@@ -50,7 +55,14 @@ export default function TypeCard({ type }) {
     return (
         <Button variant="contained" sx={{
             margin: "5px",
-            background: `${color}`
+            background: themeColors.lightAccent,
+            border: "2px solid blue",
+            "&:hover": {
+                background: "blue"
+            },
+            "&:focus": {
+                background: "blue"
+            }
         }} onClick={handleClick}>
             {type.title_plural}
         </Button>

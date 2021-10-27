@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import Typography from '@mui/material/Typography'
 import { useSelector } from 'react-redux';
 import InstanceCard from './InstanceCard';
+import { themeColors } from '../style/styleConst';
 
 export default function InstanceCardsArea() {
     const displayPath = useSelector(state=>state.display.path)
     const assistant = useSelector(state=>state.datassistants.current)
     const currentType = useSelector(state=>state.types.current)
+    const activeSelection = useSelector(state=>state.display.activeSelection)
     let instances; 
     const baseTypes = useSelector(state=>state.types.baseTypes);
 
@@ -18,7 +20,7 @@ export default function InstanceCardsArea() {
             instances = assistant.instances;
             break;
         default :
-            instances = currentType.instances;
+            instances = currentType.instances||[];
     }
 
     return (
@@ -27,7 +29,9 @@ export default function InstanceCardsArea() {
                 return (
                     <InstanceCard key={instance.id} instance={instance} />
                 )
-            }) : <Typography variant="overline">
+            }) : <Typography variant="overline" sx={{
+                color: "white"
+            }}>
                 {`No instances`}
             </Typography>}
         </InstanceCardsAreaContainer>
@@ -36,7 +40,7 @@ export default function InstanceCardsArea() {
 
 const InstanceCardsAreaContainer = styled.div`
   width: 95%;
-  background: lightblue;
+  background: ${themeColors.background};
   padding: 5px;
   display: flex;
   flex-flow: row wrap;

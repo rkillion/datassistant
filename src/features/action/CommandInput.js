@@ -13,8 +13,16 @@ export default function CommandInput({ buildObject }) {
     return <TextField 
         variant="filled"
         label={buildObject.label}
+        multiline
+        maxRows={buildObject.multiline||1}
         value={config[buildObject.setAs]}
         onChange={handleChange}
         size="small"
+        sx={{
+            color: "white",
+            border: "white",
+            "& .MuiFilledInput-root": {color: "white"},
+            "& .MuiInputLabel-root": {color: "gray"}
+        }}
     />
 }

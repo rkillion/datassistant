@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import TypeCardsArea from '../type/TypeCardsArea';
 import InterfaceHeader from '../navigation/InterfaceHeader';
 import InstanceCardsArea from '../instance/InstanceCardsArea';
+import { themeColors } from '../style/styleConst';
 
 export default function BasicViewArea() {
     const assistant = useSelector(state=>state.datassistants.current);
@@ -13,7 +14,9 @@ export default function BasicViewArea() {
     return (
         <BasicViewAreaContainer>
             <InterfaceHeader />
-            <Typography variant="h4" component="div" gutterBottom>
+            <Typography variant="h4" component="div" gutterBottom sx={{
+                color: "white"
+            }}>
                 {display[display.length-1].title_plural}
             </Typography>
             <TypeCardsArea />
@@ -25,7 +28,7 @@ export default function BasicViewArea() {
 const BasicViewAreaContainer = styled.div`
   height: 70%;
   width: 100%;
-  background: lightblue;
+  background: ${themeColors.background};
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;

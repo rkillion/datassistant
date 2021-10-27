@@ -5,6 +5,7 @@ import FormDialog from '../forms/FormDialog';
 import Button from '@mui/material/Button';
 import DatassistantCard from './DatassistantCard';
 import Appbar from '../navigation/Appbar';
+import { themeColors } from '../style/styleConst';
 
 export default function DatassistantsPage() {
     const datassistants = useSelector(state=>state.datassistants.all);
@@ -22,8 +23,17 @@ export default function DatassistantsPage() {
                 variant="contained"
                 sx={{ 
                     position: 'absolute', 
+                    width: "200px",
                     bottom: 50, 
-                    right: 100
+                    right: 100,
+                    background: themeColors.lightAccent,
+                    border: `2px solid ${themeColors.lightPurple}`,
+                    "&:hover": {
+                        background: `${themeColors.lightPurple}`
+                    },
+                    "&:focus": {
+                        background: `${themeColors.lightPurple}`
+                    }
                 }}
                 onClick={()=>setNewDFormOpen(true)}
             >
@@ -41,6 +51,7 @@ export default function DatassistantsPage() {
 const DisplayBox = styled.div`
     display: flex;
     width: auto;
+    background: ${themeColors.background};
     padding: 60px;
     flex-direction: column;
     align-items: stretch;
@@ -48,6 +59,7 @@ const DisplayBox = styled.div`
 
 const CardArea = styled.div`
     display: flex;
+    background: ${themeColors.background};
     padding-top: 30px;
     padding-bottom: 30px;
     flex-direction: row;

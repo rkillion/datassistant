@@ -57,7 +57,6 @@ export default function AutocompleteField({ positionIndex, options }) {
   }
 
   useEffect(()=>{
-    console.log("startup runChange","theseOptions",theseOptions);
     if (theseOptions.length>0) {
       let startValue = theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0];
       runChange(startValue)
@@ -65,7 +64,6 @@ export default function AutocompleteField({ positionIndex, options }) {
   },[])
 
   useEffect(()=>{
-    console.log("display runChange","theseOptions",theseOptions);
     if (theseOptions.length>0) {
       let startValue = theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0];
       runChange(startValue)
@@ -78,11 +76,18 @@ export default function AutocompleteField({ positionIndex, options }) {
   return (
     <Autocomplete
       disablePortal
+      disableClearable
       size="small"
       id={`test`}
       options={theseOptions}
       getOptionLabel={(option) => option.display[thisDisplayField]}
-      sx={{ width: "200px" }}
+      sx={{ 
+        width: "200px",
+        color: "white",
+        '& input': {
+          color: "white",
+      }, 
+      }}
       value={theseOptions[commands.optionSelections[positionIndex]]||theseOptions[0]}
       onChange={(e,newValue)=>{
         runChange(newValue);
@@ -91,7 +96,9 @@ export default function AutocompleteField({ positionIndex, options }) {
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
-      renderInput={(params) => <TextField {...params} />}
+      renderInput={(params) => <TextField {...params} sx={{
+        color: "white"
+      }}/>}
     />
   );
 }

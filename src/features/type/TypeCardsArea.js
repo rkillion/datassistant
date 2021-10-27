@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography'
 import { useSelector } from 'react-redux';
 import TypeCard from './TypeCard';
 import { myDataPathObject } from '../view/displaySlice';
+import { themeColors } from '../style/styleConst';
 
 export default function TypeCardsArea() {
     const display = useSelector(state=>state.display.current)
@@ -29,7 +30,9 @@ export default function TypeCardsArea() {
                 return (
                     <TypeCard key={type.id} type={type} />
                 )
-            }) : <Typography variant="overline">
+            }) : <Typography variant="overline" sx={{
+                color: "white"
+            }}>
                 {`No sub types`}
             </Typography>}
         </TypeCardsAreaContainer>
@@ -38,7 +41,7 @@ export default function TypeCardsArea() {
 
 const TypeCardsAreaContainer = styled.div`
   width: 95%;
-  background: lightblue;
+  background: ${themeColors.background};
   padding: 5px;
   border-top: 1px dotted black;
   border-bottom: 1px dotted black;

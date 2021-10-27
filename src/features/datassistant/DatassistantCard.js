@@ -6,6 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router';
+import { themeColors } from '../style/styleConst';
 
 export default function DatassistantCard({ datassistant }) {
     const history = useHistory()
@@ -14,7 +15,9 @@ export default function DatassistantCard({ datassistant }) {
     <Card sx={{ 
             maxWidth: 345,
             minWidth: "200px",
-            margin: "20px"
+            margin: "20px",
+            background: themeColors.lightAccent,
+            color: "white"
         }} raised={true}>
       {/* <CardMedia
         component="img"

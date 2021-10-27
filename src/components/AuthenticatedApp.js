@@ -36,5 +36,5 @@ const AuthenticatedAppWindow = styled.div`
   display: block;
   flex-flow: column nowrap;
   justify-content: center;
-  align-items: stretch;
+  align-items: center;
 `

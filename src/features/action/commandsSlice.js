@@ -12,6 +12,42 @@ export const postNew = createAsyncThunk("commands/postNew", (config) => {
         .then((data) => data);
     });
 
+export const postNote = createAsyncThunk("commands/postNote", (config) => {
+    return fetch('/note', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(config)
+    })
+        .then((response) => response.json())
+        .then((data) => data);
+    });
+
+export const postAssignment = createAsyncThunk("commands/postAssignment", (config) => {
+    return fetch('/assign', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(config)
+    })
+        .then((response) => response.json())
+        .then((data) => data);
+    });
+
+export const postAdd = createAsyncThunk("commands/postAdd", (config) => {
+    return fetch('/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(config)
+    })
+        .then((response) => response.json())
+        .then((data) => data);
+    });
+
 export const nextCommand = {
     new: [
         {
@@ -27,6 +63,7 @@ export const nextCommand = {
                             command: "new general type",
                             set: {
                                 make: "type",
+                                parent_type_id: ""
                             }
                         },
                         myData: {
@@ -35,6 +72,7 @@ export const nextCommand = {
                             command: "new general type",
                             set: {
                                 make: "type",
+                                parent_type_id: ""
                             }
                         }
                     },
@@ -42,6 +80,7 @@ export const nextCommand = {
                     command: "new type of",
                     set: {
                         make: "type",
+                        name: ""
                     }
                 },
                 {
@@ -54,6 +93,8 @@ export const nextCommand = {
                     },
                     set: {
                         make: "instance",
+                        title_singular: "",
+                        title_plural: ""
                     }
                 } 
             ]
@@ -116,10 +157,23 @@ export const nextCommand = {
         }
     ],
     assign: [
+    ],
+    note: [
         {
-            label: "not yet built"
+            text: " about "
+        },
+        {
+            activeSelection: "display"
+        },
+        {
+            input: "string",
+            multiline: 4,
+            label: "Note",
+            setAs: "note" 
         }
-    ]
+    ],
+    add: [
+    ],
 }
 
 export const configs = {
@@ -130,11 +184,27 @@ export const configs = {
         title_plural: "",
         name: ""
     },
-    assign: {}
+    assign: {
+        action_title: "grants many",
+        type_a_id: "", 
+        type_b_id: "",
+        to: "many"
+    },
+    note: {
+        isNote: true,
+        note: "",
+    },
+    add: {
+        action_title: "has",
+        instance_a_id: "",
+        instance_b_id: "",
+        type_a_id: "",
+        type_b_id: "",
+    }
 }
 
 const initialState = {
-    actionOptions: ["new","assign"],
+    actionOptions: ["new","assign","note","add"],
     commandStrings: ["new"],
     optionSelections: [0],
     config: {...configs.new},
@@ -151,8 +221,19 @@ const commandsSlice = createSlice({
             let newArray = state.commandStrings.slice(0,action.payload.index)
             state.commandStrings = [...newArray,action.payload.command];
         },
+        setCommandStrings(state, action) {
+            state.commandStrings = action.payload
+        },
         setConfig(state,action) {
             state.config = action.payload;
+        },
+        resetConfig(state,action) {
+            console.log("reset config payload is ",action.payload);
+            if (action.payload){
+                state.config = {...configs[action.payload]};
+            } else {
+                state.config = configs[state.commandStrings[0]];
+            }
         },
         //{key: keyToChange,value: newValue}
         changeConfig(state,action) {
@@ -180,10 +261,58 @@ const commandsSlice = createSlice({
                 console.log(action.payload.message)
             }
             state.status = "idle";
+        },
+        [postNote.pending](state) {
+            state.status = "loading";
+          },
+        [postNote.rejected](state) {
+            state.status = "idle";
+        },
+        [postNote.fulfilled](state, action) {
+            if (action.payload.errors) {
+                state.errors = action.payload.errors;
+                console.log(action.payload.errors)
+            } else {
+                state.errors = {};
+                console.log(action.payload)
+            }
+            state.status = "idle";
+        },
+        [postAssignment.pending](state) {
+            state.status = "loading";
+          },
+        [postAssignment.rejected](state) {
+            state.status = "idle";
+        },
+        [postAssignment.fulfilled](state, action) {
+            if (action.payload.errors) {
+                state.errors = action.payload.errors;
+                console.log(action.payload.errors)
+            } else {
+                state.errors = {};
+                console.log(action.payload)
+            }
+            state.status = "idle";
+        },
+        [postAdd.pending](state) {
+            state.status = "loading";
+          },
+        [postAdd.rejected](state) {
+            state.status = "idle";
+        },
+        [postAdd.fulfilled](state, action) {
+            if (action.payload.errors) {
+                state.errors = action.payload.errors;
+                console.log(action.payload.errors)
+            } else {
+                state.errors = {};
+                console.log(action.payload)
+            }
+            state.status = "idle";
         }
     }
 })
 
 export default commandsSlice.reducer
 
-export const { editCommandString, setConfig, editOptionSelections, changeConfig } = commandsSlice.actions;
+export const { editCommandString, setConfig, editOptionSelections, changeConfig, resetConfig, setCommandStrings } = commandsSlice.actions;

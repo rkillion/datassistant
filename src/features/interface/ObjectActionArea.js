@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import ActionArea from '../action/ActionArea';
+import { themeColors } from '../style/styleConst';
 import BasicViewArea from '../view/BasicViewArea';
 
 export default function ObjectActionArea() {
@@ -16,7 +17,7 @@ const ObjectActionContainer = styled.div`
   width: 60%;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: stretch;
-  background: lightgray;
+  background: ${themeColors.background};
 `

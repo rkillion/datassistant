@@ -10,6 +10,7 @@ import Menu from '@mui/material/Menu';
 import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../auth/userSlice';
 import { useHistory } from 'react-router';
+import { themeColors } from '../style/styleConst';
 
 export default function ProfileMenu() {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -42,6 +43,9 @@ export default function ProfileMenu() {
             aria-haspopup="true"
             onClick={handleMenu}
             color="inherit"
+            sx={{
+                color: "white"
+            }}
             >
             <AccountCircle />
             </IconButton>
@@ -61,7 +65,7 @@ export default function ProfileMenu() {
             onClose={handleClose}
             >
             <MenuItem onClick={()=>{history.push("/datassistants");handleClose()}}>My Datassistants</MenuItem>
-            <MenuItem onClick={handleLogout} style={{color: "red"}}>Logout</MenuItem>
+            <MenuItem onClick={handleLogout} sx={{color: "red"}}>Logout</MenuItem>
             </Menu>
         </div>
     )

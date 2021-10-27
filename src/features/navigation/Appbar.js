@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../auth/userSlice';
 import { useHistory } from 'react-router';
 import ProfileMenu from './ProfileMenu';
+import { themeColors } from '../style/styleConst';
 
 export default function Appbar({ toggleDrawer }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -38,9 +39,9 @@ export default function Appbar({ toggleDrawer }) {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar 
         position="fixed"
-        // sx={{
-        //   height: "8%"
-        // }}
+        sx={{
+          background: themeColors.background
+        }}
       >
         <Toolbar>
           {/* <IconButton
@@ -53,7 +54,9 @@ export default function Appbar({ toggleDrawer }) {
           >
             <MenuIcon />
           </IconButton> */}
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div" sx={{ 
+              flexGrow: 1,
+            }}>
             Datassistant
           </Typography>
           <ProfileMenu />
